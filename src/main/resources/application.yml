@@ -1,0 +1,23 @@
+server:
+    port: 3052
+
+api:
+    security:
+        token:
+            secret: $$admin24
+
+spring:
+    datasource:
+        url: jdbc:postgresql://localhost:5432/AviExpedition
+        username: donati
+        password: root
+        driver-class-name: org.postgresql.Driver
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate.jdbc.lob.non_contextual_creation: true
+            hibernate.show_sql: true
+            hibernate.format_sql: true
