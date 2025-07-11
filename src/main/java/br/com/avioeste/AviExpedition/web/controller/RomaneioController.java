@@ -3,8 +3,9 @@ package br.com.avioeste.AviExpedition.web.controller;
 import br.com.avioeste.AviExpedition.entity.Romaneio;
 import br.com.avioeste.AviExpedition.repository.RomaneioRepository;
 import br.com.avioeste.AviExpedition.web.dto.RomaneioDto;
+import br.com.avioeste.AviExpedition.service.RomaneioService;
+
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
 @RestController
 @RequestMapping("/api/v1/romaneios")
 public class RomaneioController {
 
     @Autowired
     RomaneioRepository romaneioRepository;
+
+    private final RomaneioService romaneioService;
+
+    public RomaneioController(RomaneioService romaneioService) {
+        this.romaneioService = romaneioService;
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<Romaneio>> searchAllRomaneios(){
@@ -37,9 +45,8 @@ public class RomaneioController {
 
     @PostMapping("/")
     public ResponseEntity<Romaneio> createRomaneio(@RequestBody @Valid RomaneioDto romaneioDto) {
-        Romaneio romaneioEntity = new Romaneio();
-        BeanUtils.copyProperties(romaneioDto, romaneioEntity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(romaneioRepository.save(romaneioEntity));
+        Romaneio romaneioEntity = romaneioService.create(romaneioDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(romaneioEntity);
     }
 
     @DeleteMapping("/")
